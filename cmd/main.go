@@ -26,6 +26,7 @@ func main() {
 			signalChannel := make(chan os.Signal, 1)
 			signal.Notify(signalChannel, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 			<-signalChannel
+			log.Info().Msg("Good bye!")
 			return nil
 		},
 	}
