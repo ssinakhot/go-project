@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
@@ -20,7 +22,10 @@ func main() {
 		Name:  "Executable",
 		Flags: goproject.CliFlags,
 		Action: func(*cli.Context) error {
-			log.Info().Msg("Hello World")
+			log.Info().Msg("Executable is now running. Press CTRL-C to exit.")
+			signalChannel := make(chan os.Signal, 1)
+			signal.Notify(signalChannel, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+			<-signalChannel
 			return nil
 		},
 	}
